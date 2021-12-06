@@ -106,6 +106,7 @@ void setup()
   
 }
 
+// MAIN LOOP
 void loop()
 {
   currentMillis = millis();   //manage time
@@ -121,7 +122,7 @@ void loop()
 
 
 
-
+// IF IN ARRAY SET NEW NOTE (UNSURE)
 void setNote(int value, int velocity, long duration, int notechannel)
 {
   //find available note in array (velocity = 0);
@@ -150,6 +151,7 @@ void setNote(int value, int velocity, long duration, int notechannel)
   }
 }
 
+// NOTE VALUES FOR MIDI
 void setControl(int type, int value, int velocity, long duration)
 {
   controlMessage.type = type;
@@ -160,6 +162,7 @@ void setControl(int type, int value, int velocity, long duration)
 }
 
 
+// CHANGE VALUES FOR MIDI BASED ON LIKE A SLIDING RATE? CV STUFF TOO (UNSURE)
 void checkControl()
 {
   //need to make this a smooth slide transition, using high precision 
@@ -184,6 +187,7 @@ void checkControl()
   }
 }
 
+// NOTES AND POLYPHONY AND I NEED TO LEARN HOW MIDI WORKS (UNSURE)
 void checkNote()
 {
   for (int i = 0;i<polyphony;i++) {
@@ -200,6 +204,7 @@ void checkNote()
 
 }
 
+// THIS ISN'T USED BUT GOOD TO HAVE
 void MIDIpanic()
 {
   //120 - all sound off
@@ -222,6 +227,7 @@ void MIDIpanic()
   
 }
 
+// MORE MIDI SETUP (BAD FORMATTING)
 void midiSerial(int type, int channel, int data1, int data2) {
 
   cli(); //kill interrupts, probably unnessisary
@@ -240,6 +246,7 @@ void midiSerial(int type, int channel, int data1, int data2) {
 }
 
 
+// SHOULD MOVE MAP FUNCTION UP HERE
 void checkKnob() {
   //float knobValue 
   threshold = analogRead(knobPin);  
@@ -248,11 +255,13 @@ void checkKnob() {
    
 }
 
+// NOT REMOVING OUT OF SUPERSTITION
 void knobMode() {
   //scroll through menus and select values using only a single knob
   //keep dreamin' kid,
 }
 
+// LED RAMPS
 void rampUp(int ledPin, int value, int time) {
 LEDFader *led = &leds[ledPin];
 // led->set_value(0);
@@ -265,6 +274,8 @@ void rampDown(int ledPin, int value, int time) {
   led->fade(value, time); //fade out
 }
 
+
+// LED CHECK (DID I REMOVE THIS BEFORE?)
 void checkLED(){
 //iterate through LED array and call update  
  for (byte i = 0; i < LED_NUM; i++) {
@@ -273,10 +284,13 @@ void checkLED(){
  }
 }
 
+// THE MAIN UPCOMING AFFAIR
 void checkButton() {
   //no button in this build...
 }
 
+
+// BATTERY STUFF FOR A CHUNK
 long readVcc() {  //https://code.google.com/p/tinkerit/wiki/SecretVoltmeter
   long result;
   // Read 1.1V reference against AVcc
@@ -312,6 +326,8 @@ void checkBattery(){
  }
 }
 
+
+// LIGHTS ON BOOT UP 
 void bootLightshow(){
  //light show to be displayed on boot 
   for (byte i = 5; i > 0; i--) {
@@ -329,12 +345,14 @@ void bootLightshow(){
 }
 
 
+// FOR KNOB
 //provide float map function
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+// UNUSED (SUPERSTITION)
 //debug SRAM memory size
 int freeRAM() {
   extern int __heap_start, *__brkval;
@@ -344,6 +362,7 @@ int freeRAM() {
 
 
 
+// FOR READING THE GALVANOMETER
 //interrupt timing sample array
 void sample()
 {
@@ -358,7 +377,7 @@ void sample()
 }
 
 
-
+// THE MAIN WORK, THE MATH I MUST LEARN
 void analyzeSample()
 {
   //eating up memory, one long at a time!
@@ -413,6 +432,8 @@ void analyzeSample()
   }
 }
 
+
+// FINDING THE RIGHT NOTES IN THE SCALE
 int scaleSearch(int note, int scale[], int scalesize) {
  for(byte i=1;i<scalesize;i++) {
   if(note == scale[i]) { return note; }
@@ -424,6 +445,7 @@ int scaleSearch(int note, int scale[], int scalesize) {
 }
 
 
+// ACTUALLY OUTPUTING A MIDI NOT
 int scaleNote(int note, int scale[], int root) {
   //input note mod 12 for scaling, note/12 octave
   //search array for nearest note, return scaled*octave
