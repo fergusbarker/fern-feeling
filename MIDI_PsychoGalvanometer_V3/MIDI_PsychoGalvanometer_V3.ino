@@ -20,7 +20,8 @@ int scaleMinor[]  = {7,1, 3, 4, 6, 8, 9, 11};
 int scaleChrom[] = {12,1,2,3,4,5,6,7,8,9,10,11,12};
 int minorPent[] = {5,1,4,6,8,11};
 int majorPent[] = {5,1,3,5,8,10};
-int *scaleSelect = minorPent; //initialize scaling
+int testNote[] = {1,1};
+int *scaleSelect = testNote; //initialize scaling
 int root = 0; //initialize for root
 //*******************************
 
@@ -44,6 +45,7 @@ int noteMax = 96; //C7  - keyboard note maximum
 byte QY8= 0;  //sends each note out chan 1-4, for use with General MIDI like Yamaha QY8 sequencer
 byte controlNumber = 80; //set to mappable control, low values may interfere with other soft synth controls!!
 byte controlVoltage = 1; //output PWM CV on controlLED, pin 17, PB3, digital 11 *lowpass filter
+
 long batteryLimit = 3000; //voltage check minimum, 3.0~2.7V under load; causes lightshow to turn off (save power)
 byte checkBat = 1;
 
@@ -290,11 +292,11 @@ void checkButton() {
   buttonState = digitalRead(buttonPin);
 
   if (buttonState == HIGH) {
-    if (root == 12) {
+    if (root == 11) {
       root = 0;
     }
     else {
-      root = root + 1;
+      root = root++;
     }
     delay(50);
   }
