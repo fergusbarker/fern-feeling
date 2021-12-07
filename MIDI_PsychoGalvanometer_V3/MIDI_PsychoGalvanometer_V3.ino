@@ -255,12 +255,6 @@ void checkKnob() {
    
 }
 
-// NOT REMOVING OUT OF SUPERSTITION
-void knobMode() {
-  //scroll through menus and select values using only a single knob
-  //keep dreamin' kid,
-}
-
 // LED RAMPS
 void rampUp(int ledPin, int value, int time) {
 LEDFader *led = &leds[ledPin];
