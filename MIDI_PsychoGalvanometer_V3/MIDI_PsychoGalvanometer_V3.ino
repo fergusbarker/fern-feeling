@@ -264,6 +264,8 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+
+//////////////////////////////////////////////////////// LED LED LED 
 // LED RAMPS
 void rampUp(int ledPin, int value, int time) {
 LEDFader *led = &leds[ledPin];
@@ -287,6 +289,25 @@ void checkLED(){
  }
 }
 
+
+// LIGHTS ON BOOT UP 
+void bootLightshow(){
+ //light show to be displayed on boot 
+  for (byte i = 5; i > 0; i--) {
+    LEDFader *led = &leds[i-1];
+//    led->set_value(200); //set to max
+
+    led->fade(200, 150); //fade up
+    while(led->is_fading()) checkLED();
+   
+
+    led->fade(0,150+i*17);  //fade down
+    while(led->is_fading()) checkLED();
+   //move to next LED
+  }
+}
+//////////////////////////////////////////////////////// LED LED LED 
+
 // THE MAIN UPCOMING AFFAIR
 void checkButton() {
   buttonState = digitalRead(buttonPin);
@@ -299,7 +320,7 @@ void checkButton() {
       root = root++;
     }
   }
-  delay(10);
+  delay(50);
 }
 
 
@@ -337,24 +358,6 @@ void checkBattery(){
     } 
   } 
  }
-}
-
-
-// LIGHTS ON BOOT UP 
-void bootLightshow(){
- //light show to be displayed on boot 
-  for (byte i = 5; i > 0; i--) {
-    LEDFader *led = &leds[i-1];
-//    led->set_value(200); //set to max
-
-    led->fade(200, 150); //fade up
-    while(led->is_fading()) checkLED();
-   
-
-    led->fade(0,150+i*17);  //fade down
-    while(led->is_fading()) checkLED();
-   //move to next LED
-  }
 }
 
 
