@@ -20,7 +20,7 @@ int scaleMinor[]  = {7,1, 3, 4, 6, 8, 9, 11};
 int scaleChrom[] = {12,1,2,3,4,5,6,7,8,9,10,11,12};
 int minorPent[] = {5,1,4,6,8,11};
 int majorPent[] = {5,1,3,5,8,10};
-int testNote[] = {1,1};
+int testNote[] = {2,1,2};
 int *scaleSelect = testNote; //initialize scaling
 int root = 0; //initialize for root
 //*******************************
@@ -29,7 +29,7 @@ int root = 0; //initialize for root
 // BUTTONS
 const byte interruptPin = INT0; //galvanometer input
 const byte knobPin = A0; //knob analog input
-const int buttonPin = 14; // pin for button inputs BUTTON TO COME
+const int buttonPin = 8; // pin for button inputs BUTTON TO COME
 int buttonState = 0; // read button
 
 
@@ -298,7 +298,7 @@ void checkButton() {
     else {
       root = root++;
     }
-    delay(50);
+    delay(10);
   }
 }
 
@@ -447,7 +447,7 @@ int scaleNote(int note, int scale[], int root) {
   //search array for nearest note, return scaled*octave
   int scaled = note%12;
   // int octave = note/12; temp off testing
-  int octave = 3 // for testing
+  int octave = 3; // for testing
   int scalesize = (scale[0]);
   //search entire array and return closest scaled note
   scaled = scaleSearch(scaled, scale, scalesize);
