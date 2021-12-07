@@ -246,13 +246,20 @@ void midiSerial(int type, int channel, int data1, int data2) {
 }
 
 
-// SHOULD MOVE MAP FUNCTION UP HERE
+// READ KNOB
 void checkKnob() {
   //float knobValue 
   threshold = analogRead(knobPin);  
   //set threshold to knobValue mapping
   threshold = mapfloat(threshold, knobMin, knobMax, threshMin, threshMax);
    
+}
+
+// FOR KNOB
+//provide float map function
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 // LED RAMPS
@@ -337,23 +344,6 @@ void bootLightshow(){
    //move to next LED
   }
 }
-
-
-// FOR KNOB
-//provide float map function
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
-{
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-// UNUSED (SUPERSTITION)
-//debug SRAM memory size
-int freeRAM() {
-  extern int __heap_start, *__brkval;
-  int v;
-  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
-} // print free RAM at any point
-
 
 
 // FOR READING THE GALVANOMETER
