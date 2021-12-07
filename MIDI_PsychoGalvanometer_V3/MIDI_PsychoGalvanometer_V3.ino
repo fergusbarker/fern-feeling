@@ -298,8 +298,8 @@ void checkButton() {
     else {
       root = root++;
     }
-    delay(10);
   }
+  delay(10);
 }
 
 
