@@ -115,7 +115,7 @@ void loop()
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
-  //checkButton();  //not implemented in this build
+  checkButton();  // WIP
   checkLED();  //LED management without delay()
   previousMillis = currentMillis;   //manage time
 }
@@ -287,7 +287,17 @@ void checkLED(){
 
 // THE MAIN UPCOMING AFFAIR
 void checkButton() {
-  //no button in this build...
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH) {
+    if (root == 12) {
+      root = 0;
+    }
+    else {
+      root = root + 1;
+    }
+    delay(50);
+  }
 }
 
 
