@@ -441,12 +441,13 @@ int scaleSearch(int note, int scale[], int scalesize) {
 }
 
 
-// ACTUALLY OUTPUTING A MIDI NOT
+// ACTUALLY OUTPUTING A MIDI NOTE
 int scaleNote(int note, int scale[], int root) {
   //input note mod 12 for scaling, note/12 octave
   //search array for nearest note, return scaled*octave
   int scaled = note%12;
-  int octave = note/12;
+  // int octave = note/12; temp off testing
+  int octave = 3 // for testing
   int scalesize = (scale[0]);
   //search entire array and return closest scaled note
   scaled = scaleSearch(scaled, scale, scalesize);
