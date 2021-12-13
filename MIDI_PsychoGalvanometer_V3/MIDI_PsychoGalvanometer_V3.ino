@@ -80,6 +80,7 @@ byte noteLEDs = 1;  //performs lightshow set at noteOn event
 
 
 // MIDI FORMAT
+// Create a new type that stores midi and initialise as noteArray
 typedef struct _MIDImessage { //build structure for Note and Control MIDImessages
   unsigned int type;
   int value;
