@@ -7,6 +7,13 @@ are generated.  Features include Threshold, Scaling, Control Number, and Control
 using PWM through an RC Low Pass filter.
 -------------*/
 
+/*
+ * TODO:
+ * Remove Battery Stuff
+ * Remove QY8 stuff
+ * (one at a time! think that fucked it last time)
+ */
+
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
 
 
