@@ -325,24 +325,33 @@ void bootLightshow(){
 void checkButton() {
   buttonState = digitalRead(buttonPin);
 
-/*
-  if (buttonState == HIGH) {
+
+  if (buttonState == HIGH)
+  {
+    //digitalWrite(LEDPin, HIGH);
     if (root == 11) {
       root = 0;
     }
     else {
       root = root++;
     }
+    
+  } else {
+    //digitalWrite(LEDPin, LOW);
+  }
+  if (root == 3) {
+    digitalWrite(LEDPin, HIGH);
   }
   delay(50);
-  */
 
   /// TEMPORARY TEST FUNCTION FOR BUTTON
+  /*
   if (buttonState == HIGH) {
     digitalWrite(LEDPin, HIGH);
   } else {
     digitalWrite(LEDPin, LOW);
   }
+  */
 }
 
 
@@ -433,7 +442,8 @@ void analyzeSample()
     }
     //*********
     
-    if(change){// set note and control vector
+    if(change){
+       // set note and control vector
        int dur = 150+(map(delta%127,1,127,100,2500)); //length of note
        int ramp = 3 + (dur%100) ; //control slide rate, min 25 (or 3 ;)
        int notechannel = random(1,5); //gather a random channel for QY8 mode
