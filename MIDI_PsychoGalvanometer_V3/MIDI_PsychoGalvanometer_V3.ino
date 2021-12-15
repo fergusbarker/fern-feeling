@@ -10,7 +10,6 @@ using PWM through an RC Low Pass filter.
 /*
  * TODO:
  * Remove Battery Stuff
- * Remove QY8 stuff
  * (one at a time! think that fucked it last time)
  */
 
@@ -52,7 +51,7 @@ const byte polyphony = 5; //above 8 notes may run out of ram
 byte channel = 1;  //setting channel to 11 or 12 often helps simply computer midi routing setups
 int noteMin = 36; //C2  - keyboard note minimum
 int noteMax = 96; //C7  - keyboard note maximum
-byte QY8= 0;  //sends each note out chan 1-4, for use with General MIDI like Yamaha QY8 sequencer
+// byte QY8= 0;  //sends each note out chan 1-4, for use with General MIDI like Yamaha QY8 sequencer
 byte controlNumber = 80; //set to mappable control, low values may interfere with other soft synth controls!!
 byte controlVoltage = 1; //output PWM CV on controlLED, pin 17, PB3, digital 11 *lowpass filter
 
@@ -111,7 +110,7 @@ void setup()
   pinMode(buttonPin, INPUT);
   // TEMP BUTTON
   pinMode(LEDPin, OUTPUT);
-  randomSeed(analogRead(0)); //seed for QY8 
+  // randomSeed(analogRead(0)); //seed for QY8 
   Serial.begin(31250);  //initialize at MIDI rate
   controlMessage.value = 0;  //begin CV at 0
   //MIDIpanic(); //dont panic, unless you are sure it is nessisary
@@ -154,9 +153,9 @@ void setNote(int value, int velocity, long duration, int notechannel)
       noteArray[i].channel = notechannel;
      
       
-        if(QY8) { midiSerial(144, notechannel, value, velocity); } 
-        else { midiSerial(144, channel, value, velocity); }
-
+        // if(QY8) { midiSerial(144, notechannel, value, velocity); } 
+        // else { midiSerial(144, channel, value, velocity); }
+        midiSerial(144, channel, value, velocity);
 
       if(noteLEDs){ 
           for(byte j=0; j<(LED_NUM-1); j++) {   //find available LED and set
@@ -212,8 +211,9 @@ void checkNote()
     if(noteArray[i].velocity) {
       if (noteArray[i].duration <= currentMillis) {
         //send noteOff for all notes with expired duration    
-          if(QY8) { midiSerial(144, noteArray[i].channel, noteArray[i].value, 0); }
-          else { midiSerial(144, channel, noteArray[i].value, 0); }
+//          if(QY8) { midiSerial(144, noteArray[i].channel, noteArray[i].value, 0); }
+//          else { midiSerial(144, channel, noteArray[i].value, 0); }
+        midiSerial(144, channel, noteArray[i].value, 0);
         noteArray[i].velocity = 0;
         rampDown(i, 0, 225);
       }
@@ -234,12 +234,13 @@ void MIDIpanic()
     delay(1); //don't choke on note offs!
     midiSerial(144, channel, i, 0); //clear notes on main channel
 
-       if(QY8){ //clear on all four channels
+/*       if(QY8){ //clear on all four channels
          for(byte k=1;k<5;k++) {
           delay(1); //don't choke on note offs!
           midiSerial(144, k, i, 0);
          }
        } 
+*/
   }
   
   
@@ -454,14 +455,15 @@ void analyzeSample()
        // set note and control vector
        int dur = 150+(map(delta%127,1,127,100,2500)); //length of note
        int ramp = 3 + (dur%100) ; //control slide rate, min 25 (or 3 ;)
-       int notechannel = random(1,5); //gather a random channel for QY8 mode
+       // int notechannel = random(1,5); //gather a random channel for QY8 mode
        
        //set scaling, root key, note
        int setnote = map(averg%127,1,127,noteMin,noteMax);  //derive note, min and max note
        setnote = scaleNote(setnote, scaleSelect, root);  //scale the note
        // setnote = setnote + root; // (apply root?)
-       if(QY8) { setNote(setnote, 100, dur, notechannel); } //set for QY8 mode
-       else { setNote(setnote, 100, dur, channel); }
+       //if(QY8) { setNote(setnote, 100, dur, notechannel); } //set for QY8 mode
+       //else { setNote(setnote, 100, dur, channel); }
+       setNote(setnote, 100, dur, channel);
   
        //derive control parameters and set    
        setControl(controlNumber, controlMessage.value, delta%127, ramp); //set the ramp rate for the control
