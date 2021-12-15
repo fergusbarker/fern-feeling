@@ -322,9 +322,9 @@ void bootLightshow(){
 //////////////////////////////////////////////////////// LED LED LED 
 
 // THE MAIN UPCOMING AFFAIR
-int checkButton(int root) {
+int checkButton(int x) {
   buttonState = digitalRead(buttonPin);
-  int rootVal = 1;
+  int rootVal = x;
 
   if (buttonState == HIGH)
   {
@@ -345,7 +345,7 @@ int checkButton(int root) {
   if (rootVal > 0) {
     digitalWrite(LEDPin, HIGH);
   }
-  delay(50);
+  delay(200);
 
   /// TEMPORARY TEST FUNCTION FOR BUTTON
   /*
