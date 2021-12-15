@@ -130,7 +130,7 @@ void loop()
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
-  checkButton();  // WIP
+  root = checkButton(root);  // WIP
   checkLED();  //LED management without delay()
   previousMillis = currentMillis;   //manage time
 }
@@ -322,9 +322,9 @@ void bootLightshow(){
 //////////////////////////////////////////////////////// LED LED LED 
 
 // THE MAIN UPCOMING AFFAIR
-void checkButton() {
+int checkButton(int root) {
   buttonState = digitalRead(buttonPin);
-
+  int rootVal = 1;
 
   if (buttonState == HIGH)
   {
@@ -337,17 +337,13 @@ void checkButton() {
       root = root++;
     }
     */
-    root = root++;
+    rootVal = rootVal++;
     
   } else {
     //digitalWrite(LEDPin, LOW);
   }
-  if (root == 1 || root == 5) {
+  if (rootVal > 0) {
     digitalWrite(LEDPin, HIGH);
-  }
-  else
-  { 
-    digitalWrite(LEDPin, LOW);
   }
   delay(50);
 
@@ -359,6 +355,8 @@ void checkButton() {
     digitalWrite(LEDPin, LOW);
   }
   */
+
+  return rootVal;
 }
 
 
