@@ -131,6 +131,9 @@ void loop()
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
   root = checkButton(root);  // WIP
+  if (root > 0) {
+    digitalWrite(LEDPin, HIGH);
+  }
   checkLED();  //LED management without delay()
   previousMillis = currentMillis;   //manage time
 }
