@@ -328,6 +328,7 @@ void checkButton() {
 
   if (buttonState == HIGH)
   {
+    /*
     //digitalWrite(LEDPin, HIGH);
     if (root == 11) {
       root = 0;
@@ -335,12 +336,18 @@ void checkButton() {
     else {
       root = root++;
     }
+    */
+    root = root++;
     
   } else {
     //digitalWrite(LEDPin, LOW);
   }
-  if (root == 3) {
+  if (root == 1 || root == 5) {
     digitalWrite(LEDPin, HIGH);
+  }
+  else
+  { 
+    digitalWrite(LEDPin, LOW);
   }
   delay(50);
 
