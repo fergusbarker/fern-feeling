@@ -39,6 +39,9 @@ const byte knobPin = A0; //knob analog input
 const int buttonPin = 8; // pin for button inputs BUTTON TO COME
 int buttonState = 0; // read button
 
+// TEMP BUTTON
+const int LEDPin = 7;
+
 
 // SAMPLE ARRAY
 const byte samplesize = 10; //set sample array size
@@ -106,6 +109,8 @@ void setup()
 {
   pinMode(knobPin, INPUT);
   pinMode(buttonPin, INPUT);
+  // TEMP BUTTON
+  pinMode(LEDPin, OUTPUT);
   randomSeed(analogRead(0)); //seed for QY8 
   Serial.begin(31250);  //initialize at MIDI rate
   controlMessage.value = 0;  //begin CV at 0
@@ -320,6 +325,7 @@ void bootLightshow(){
 void checkButton() {
   buttonState = digitalRead(buttonPin);
 
+/*
   if (buttonState == HIGH) {
     if (root == 11) {
       root = 0;
@@ -329,6 +335,14 @@ void checkButton() {
     }
   }
   delay(50);
+  */
+
+  /// TEMPORARY TEST FUNCTION FOR BUTTON
+  if (buttonState == HIGH) {
+    digitalWrite(LEDPin, HIGH);
+  } else {
+    digitalWrite(LEDPin, LOW);
+  }
 }
 
 
