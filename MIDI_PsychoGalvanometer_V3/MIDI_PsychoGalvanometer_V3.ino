@@ -10,7 +10,6 @@ using PWM through an RC Low Pass filter.
 /*
  * TODO:
  * Remove Battery Stuff
- * (one at a time! think that fucked it last time)
  */
 
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
@@ -127,7 +126,7 @@ void loop()
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
-  root = checkButton(root);  // WIP
+  root = checkButton(&root);  // WIP
   if (root > 0) {
     digitalWrite(LEDPin, HIGH);
   }
@@ -335,7 +334,7 @@ int checkButton(int x) {
   if (rootVal > 0) {
     digitalWrite(LEDPin, HIGH);
   }
-  delay(200);
+  delay(100);
 
   /// TEMPORARY TEST FUNCTION FOR BUTTON
   /*
