@@ -127,9 +127,6 @@ void loop()
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
   root = checkButton(&root);  // WIP
-  if (root > 0) {
-    digitalWrite(LEDPin, HIGH);
-  }
   checkLED();  //LED management without delay()
   previousMillis = currentMillis;   //manage time
 }
@@ -314,10 +311,10 @@ void bootLightshow(){
 int checkButton(int x) {
   buttonState = digitalRead(buttonPin);
   int rootVal = x;
-
+  
   if (buttonState == HIGH)
   {
-    /*
+    
     //digitalWrite(LEDPin, HIGH);
     if (root == 11) {
       root = 0;
@@ -325,7 +322,7 @@ int checkButton(int x) {
     else {
       root = root++;
     }
-    */
+    
     rootVal = rootVal++;
     
   } else {
@@ -338,8 +335,8 @@ int checkButton(int x) {
   else {
     digitalWrite(LEDPin, LOW);
   }
-  delay(100);
-
+  
+  
   /// TEMPORARY TEST FUNCTION FOR BUTTON
   /*
   if (buttonState == HIGH) {
@@ -348,7 +345,9 @@ int checkButton(int x) {
     digitalWrite(LEDPin, LOW);
   }
   */
-
+  
+  
+  delay(100);
   return rootVal;
 }
 
