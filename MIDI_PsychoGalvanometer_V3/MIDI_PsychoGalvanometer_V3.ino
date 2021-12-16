@@ -331,8 +331,12 @@ int checkButton(int x) {
   } else {
     //digitalWrite(LEDPin, LOW);
   }
-  if (rootVal > 0) {
+  
+  if ((rootVal % 2) == 0) {
     digitalWrite(LEDPin, HIGH);
+  }
+  else {
+    digitalWrite(LEDPin, LOW);
   }
   delay(100);
 
