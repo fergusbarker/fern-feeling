@@ -206,6 +206,7 @@ void checkNote()
 }
 
 // THIS ISN'T USED BUT GOOD TO HAVE
+/*
 void MIDIpanic()
 {
   //120 - all sound off
@@ -218,25 +219,26 @@ void MIDIpanic()
     midiSerial(144, channel, i, 0); //clear notes on main channel
 
   }
-  
+
   
 }
+*/
 
 // MORE MIDI SETUP (BAD FORMATTING)
 void midiSerial(int type, int channel, int data1, int data2) {
 
   cli(); //kill interrupts, probably unnessisary
-    //  Note type = 144
-    //  Control type = 176	
-    // remove MSBs on data
-		data1 &= 0x7F;  //number
-		data2 &= 0x7F;  //velocity
-		
-		byte statusbyte = (type | ((channel-1) & 0x0F));
-		
-		Serial.write(statusbyte);
-		Serial.write(data1);
-		Serial.write(data2);
+  //  Note type = 144
+  //  Control type = 176	
+  // remove MSBs on data
+	data1 &= 0x7F;  //number
+	data2 &= 0x7F;  //velocity
+	
+	byte statusbyte = (type | ((channel-1) & 0x0F));
+	
+	Serial.write(statusbyte);
+	Serial.write(data1);
+	Serial.write(data2);
   sei(); //enable interrupts
 }
 
