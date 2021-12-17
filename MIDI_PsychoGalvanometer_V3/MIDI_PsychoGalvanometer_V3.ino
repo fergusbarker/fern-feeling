@@ -319,18 +319,26 @@ void bootLightshow(){
 int checkButton() {
   
   int reading = digitalRead(buttonPin);
+  
   // debounce
+  // check for change
   if (reading != lastButtonState) {
     lastDebounceTime = millis();
   }
 
+  // act if enough time between debounce
   if ((millis() - lastDebounceTime) > debounceDelay) {
     if (reading != buttonState) {
       buttonState = reading;
 
       if (buttonState == HIGH) {
         root++;
-        ledState = !ledState;
+        if (root == 12) {
+          root = 0;
+        }
+        if ((root % 2) == 0) {
+          ledState = !ledState;
+        }
       }
     }
   }
@@ -339,19 +347,6 @@ int checkButton() {
   /*
   if (buttonState == HIGH)
   {
-    
-    //digitalWrite(LEDPin, HIGH);
-    if (root == 11) {
-      root = 0;
-    }
-    else {
-      root = root++;
-    }
-    
-    
-    root++;
-    
-
     if ((root % 5) == 0) {
       digitalWrite(LEDPin, HIGH);
     } else {
@@ -360,9 +355,6 @@ int checkButton() {
     
   } 
   */
-  
-  
-  
   
   /// TEMPORARY TEST FUNCTION FOR BUTTON
   /*
@@ -374,7 +366,6 @@ int checkButton() {
   */
   
   lastButtonState = reading;
-  delay(100);
 }
 
 
