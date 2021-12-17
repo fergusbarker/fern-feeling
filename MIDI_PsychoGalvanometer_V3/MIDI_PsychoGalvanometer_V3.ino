@@ -49,10 +49,6 @@ int noteMax = 96; //C7  - keyboard note maximum
 byte controlNumber = 80; //set to mappable control, low values may interfere with other soft synth controls!!
 byte controlVoltage = 1; //output PWM CV on controlLED, pin 17, PB3, digital 11 *lowpass filter
 
-// BATTERY
-// long batteryLimit = 3000; //voltage check minimum, 3.0~2.7V under load; causes lightshow to turn off (save power)
-// byte checkBat = 1;
-
 // DEBOUNCE STUFF
 unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
@@ -64,7 +60,6 @@ volatile byte index = 0;
 volatile unsigned long samples[samplesize];
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 1;
-// unsigned long batteryCheck = 0; //battery check delay timer
 
 // KNOB VALUES
 float threshold = 2.3;  //change threshold multiplier
@@ -113,7 +108,6 @@ void setup()
   Serial.begin(31250);  //initialize at MIDI rate
   controlMessage.value = 0;  //begin CV at 0
   //MIDIpanic(); //dont panic, unless you are sure it is nessisary
-  // checkBattery(); // shut off lightshow if power is too low
   if(noteLEDs) bootLightshow(); //a light show to display on system boot
   attachInterrupt(interruptPin, sample, RISING);  //begin sampling from interrupt
   
@@ -123,7 +117,6 @@ void setup()
 void loop()
 {
   currentMillis = millis();   //manage time
-//  checkBattery(); //on low power, shutoff lightShow, continue MIDI operation
   checkKnob(); //check knob value
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
@@ -358,43 +351,7 @@ int checkButton() {
 }
 
 
-// BATTERY STUFF FOR A CHUNK
-/*
-long readVcc() {  //https://code.google.com/p/tinkerit/wiki/SecretVoltmeter
-  long result;
-  // Read 1.1V reference against AVcc
-  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-  delay(2); // Wait for Vref to settle
-  ADCSRA |= _BV(ADSC); // Convert
-  while (bit_is_set(ADCSRA,ADSC));
-  result = ADCL;
-  result |= ADCH<<8;
-  result = 1126400L / result; // Back-calculate AVcc in mV
-  return result;
-}
 
-void checkBattery(){
-  //check battery voltage against internal 1.1v reference
-  //if below the minimum value, turn off the light show to save power
-  //don't check on every loop, settle delay in readVcc() slows things down a bit
- if(batteryCheck < currentMillis){
-  batteryCheck = currentMillis+10000; //reset for next battery check
-   
-  if(readVcc() < batteryLimit) {   //if voltage > valueV
-    //battery failure  
-    if(checkBat) { //first battery failure
-      for(byte j=0;j<LED_NUM;j++) { leds[j].stop_fade(); leds[j].set_value(0); }  //reset leds, power savings
-      noteLEDs = 0;  //shut off lightshow set at noteOn event, power savings
-      checkBat = 0; //update, first battery failure identified
-    } else { //not first low battery cycle
-      //do nothing, lights off indicates low battery
-      //MIDI continues to flow, MIDI data eventually garbles at very low voltages
-      //some USB-MIDI interfaces may crash due to garbled data
-    } 
-  } 
- }
-}
-*/
 
 
 // FOR READING THE GALVANOMETER
