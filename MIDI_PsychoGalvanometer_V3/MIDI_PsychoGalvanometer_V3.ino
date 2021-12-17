@@ -36,6 +36,7 @@ const byte interruptPin = INT0; //galvanometer input
 const byte knobPin = A0; //knob analog input
 const int buttonPin = 8; // pin for button inputs BUTTON TO COME
 int buttonState = 0; // read button
+int lastButtonState = LOW; // for debounce
 
 // TEMP BUTTON
 const int LEDPin = 7;
@@ -55,6 +56,11 @@ byte controlVoltage = 1; //output PWM CV on controlLED, pin 17, PB3, digital 11 
 
 long batteryLimit = 3000; //voltage check minimum, 3.0~2.7V under load; causes lightshow to turn off (save power)
 byte checkBat = 1;
+
+// DEBOUNCE STUFF
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+int ledState = HIGH;
 
 // TIME
 volatile unsigned long microseconds; //sampling timer
@@ -312,12 +318,28 @@ void bootLightshow(){
 // THE MAIN UPCOMING AFFAIR
 int checkButton() {
   
-  buttonState = digitalRead(buttonPin);
+  int reading = digitalRead(buttonPin);
+  // debounce
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+  }
 
-  
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      if (buttonState == HIGH) {
+        root++;
+        ledState = !ledState;
+      }
+    }
+  }
+
+  digitalWrite(LEDPin, ledState);
+  /*
   if (buttonState == HIGH)
   {
-    /*
+    
     //digitalWrite(LEDPin, HIGH);
     if (root == 11) {
       root = 0;
@@ -325,7 +347,7 @@ int checkButton() {
     else {
       root = root++;
     }
-    */
+    
     
     root++;
     
@@ -337,6 +359,7 @@ int checkButton() {
     }
     
   } 
+  */
   
   
   
@@ -350,7 +373,7 @@ int checkButton() {
   }
   */
   
-  
+  lastButtonState = reading;
   delay(100);
 }
 
