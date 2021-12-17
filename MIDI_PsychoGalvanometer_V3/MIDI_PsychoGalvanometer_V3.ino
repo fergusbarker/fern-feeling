@@ -21,7 +21,7 @@ int testNote[] = {2,1,2};
 
 int root = 0; //initialize for root
 
-int currentScale[] = {scaleMajor, scaleDiaMinor, scaleIndian, scaleMinor, scaleChrom, minorPent, majorPent};
+int currentScale[] = {testNote, scaleDiaMinor, testNote, scaleMinor, testNote, minorPent, testNote};
 int selectedScale = 0; // start at 0 the major scale
 int scaleLength = 7; // length of currentScale,  easier than using arraylist for something so static
 
@@ -465,7 +465,7 @@ int scaleNote(int note, int scale[], int root)
   //search array for nearest note, return scaled*octave
   int scaled = note%12;
   // int octave = note/12;
-  int octave = note/12;
+  int octave = 3;
   int scalesize = (scale[0]);
   //search entire array and return closest scaled note
   scaled = scaleSearch(scaled, scale, scalesize);
