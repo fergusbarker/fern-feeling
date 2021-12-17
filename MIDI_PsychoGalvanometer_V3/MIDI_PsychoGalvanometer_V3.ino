@@ -7,11 +7,6 @@ are generated.  Features include Threshold, Scaling, Control Number, and Control
 using PWM through an RC Low Pass filter.
 -------------*/
 
-/*
- * TODO:
- * Remove Battery Stuff
- */
-
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
 
 
@@ -54,8 +49,9 @@ int noteMax = 96; //C7  - keyboard note maximum
 byte controlNumber = 80; //set to mappable control, low values may interfere with other soft synth controls!!
 byte controlVoltage = 1; //output PWM CV on controlLED, pin 17, PB3, digital 11 *lowpass filter
 
-long batteryLimit = 3000; //voltage check minimum, 3.0~2.7V under load; causes lightshow to turn off (save power)
-byte checkBat = 1;
+// BATTERY
+// long batteryLimit = 3000; //voltage check minimum, 3.0~2.7V under load; causes lightshow to turn off (save power)
+// byte checkBat = 1;
 
 // DEBOUNCE STUFF
 unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
@@ -68,7 +64,7 @@ volatile byte index = 0;
 volatile unsigned long samples[samplesize];
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 1;
-unsigned long batteryCheck = 0; //battery check delay timer
+// unsigned long batteryCheck = 0; //battery check delay timer
 
 // KNOB VALUES
 float threshold = 2.3;  //change threshold multiplier
@@ -117,7 +113,7 @@ void setup()
   Serial.begin(31250);  //initialize at MIDI rate
   controlMessage.value = 0;  //begin CV at 0
   //MIDIpanic(); //dont panic, unless you are sure it is nessisary
-  checkBattery(); // shut off lightshow if power is too low
+  // checkBattery(); // shut off lightshow if power is too low
   if(noteLEDs) bootLightshow(); //a light show to display on system boot
   attachInterrupt(interruptPin, sample, RISING);  //begin sampling from interrupt
   
@@ -127,7 +123,7 @@ void setup()
 void loop()
 {
   currentMillis = millis();   //manage time
-  checkBattery(); //on low power, shutoff lightShow, continue MIDI operation
+//  checkBattery(); //on low power, shutoff lightShow, continue MIDI operation
   checkKnob(); //check knob value
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
@@ -321,21 +317,25 @@ int checkButton() {
   int reading = digitalRead(buttonPin);
   
   // debounce
-  // check for change
+  // check for presses too fast
   if (reading != lastButtonState) {
     lastDebounceTime = millis();
   }
 
   // act if enough time between debounce
   if ((millis() - lastDebounceTime) > debounceDelay) {
+    // check for change
     if (reading != buttonState) {
       buttonState = reading;
 
+      // if read high, increment root note
       if (buttonState == HIGH) {
         root++;
+        // reloop for octave
         if (root == 12) {
           root = 0;
         }
+        // temporary function for LED testing
         if ((root % 2) == 0) {
           ledState = !ledState;
         }
@@ -344,17 +344,6 @@ int checkButton() {
   }
 
   digitalWrite(LEDPin, ledState);
-  /*
-  if (buttonState == HIGH)
-  {
-    if ((root % 5) == 0) {
-      digitalWrite(LEDPin, HIGH);
-    } else {
-      digitalWrite(LEDPin, LOW);
-    }
-    
-  } 
-  */
   
   /// TEMPORARY TEST FUNCTION FOR BUTTON
   /*
@@ -370,6 +359,7 @@ int checkButton() {
 
 
 // BATTERY STUFF FOR A CHUNK
+/*
 long readVcc() {  //https://code.google.com/p/tinkerit/wiki/SecretVoltmeter
   long result;
   // Read 1.1V reference against AVcc
@@ -404,6 +394,7 @@ void checkBattery(){
   } 
  }
 }
+*/
 
 
 // FOR READING THE GALVANOMETER
