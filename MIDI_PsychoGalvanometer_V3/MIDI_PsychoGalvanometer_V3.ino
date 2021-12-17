@@ -18,8 +18,14 @@ int scaleChrom[] = {12,1,2,3,4,5,6,7,8,9,10,11,12};
 int minorPent[] = {5,1,4,6,8,11};
 int majorPent[] = {5,1,3,5,8,10};
 int testNote[] = {2,1,2};
-int *scaleSelect = majorPent; //initialize scaling
+
 int root = 0; //initialize for root
+
+int currentScale[] = {scaleMajor, scaleDiaMinor, scaleIndian, scaleMinor, scaleChrom, minorPent, majorPent};
+int selectedScale = 0; // start at 0 the major scale
+int scaleLength = 7; // length of currentScale,  easier than using arraylist for something so static
+
+int *scaleSelect = currentScale[0]; //initialize scaling
 //*******************************
 
 // VARIABLES
@@ -302,7 +308,7 @@ void bootLightshow(){
 //////////////////////////////////////////////////////// LED LED LED 
 
 // THE MAIN UPCOMING AFFAIR
-int checkButton() {
+void checkButton() {
   
   int reading = digitalRead(buttonPin);
   
@@ -320,11 +326,14 @@ int checkButton() {
 
       // if read high, increment root note
       if (buttonState == HIGH) {
+        /*
         root++;
         // reloop for octave
         if (root == 12) {
           root = 0;
         }
+        */
+        changeScale();
         // temporary function for LED testing
         if ((root % 2) == 0) {
           ledState = !ledState;
@@ -345,6 +354,16 @@ int checkButton() {
   */
   
   lastButtonState = reading;
+}
+
+// SCALE CHANGE
+void changeScale() {
+  selectedScale++;
+  if (selectedScale == scaleLength)
+  {
+    selectedScale = 0;
+  }
+  *scaleSelect = currentScale[selectedScale];
 }
 
 // FOR READING THE GALVANOMETER
@@ -419,9 +438,19 @@ void analyzeSample()
 
 // FINDING THE RIGHT NOTES IN THE SCALE
 int scaleSearch(int note, int scale[], int scalesize) {
- for(byte i=1;i<scalesize;i++) {
-  if(note == scale[i]) { return note; }
-  else { if(note < scale[i]) { return scale[i]; } } //highest scale value less than or equal to note
+ for(byte i=1; i<scalesize; i++)
+ {
+  if(note == scale[i]) 
+  {
+    return note;
+  }
+  else
+  {
+    if(note < scale[i]) 
+    { 
+      return scale[i]; 
+    } 
+  } //highest scale value less than or equal to note
   //otherwise continue search
  }
  //didn't find note and didn't pass note value, uh oh!
@@ -430,12 +459,13 @@ int scaleSearch(int note, int scale[], int scalesize) {
 
 
 // ACTUALLY OUTPUTING A MIDI NOTE
-int scaleNote(int note, int scale[], int root) {
+int scaleNote(int note, int scale[], int root)
+{
   //input note mod 12 for scaling, note/12 octave
   //search array for nearest note, return scaled*octave
   int scaled = note%12;
-  // int octave = note/12; temp off testing
-  int octave = 3; // for testing
+  // int octave = note/12;
+  int octave = note/12;
   int scalesize = (scale[0]);
   //search entire array and return closest scaled note
   scaled = scaleSearch(scaled, scale, scalesize);
