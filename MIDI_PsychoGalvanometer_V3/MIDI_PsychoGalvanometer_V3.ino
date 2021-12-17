@@ -21,7 +21,7 @@ int scaleChrom[] = {12,1,2,3,4,5,6,7,8,9,10,11,12};
 int minorPent[] = {5,1,4,6,8,11};
 int majorPent[] = {5,1,3,5,8,10};
 int testNote[] = {2,1,2};
-int *scaleSelect = testNote; //initialize scaling
+int *scaleSelect = majorPent; //initialize scaling
 int root = 0; //initialize for root
 //*******************************
 
