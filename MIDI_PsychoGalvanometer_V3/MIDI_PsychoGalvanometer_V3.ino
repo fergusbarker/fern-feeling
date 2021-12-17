@@ -2,9 +2,6 @@
 MIDI_PsychoGalvanometer v021
 Accepts pulse inputs from a Galvanic Conductance sensor 
 consisting of a 555 timer set as an astablemultivibrator and two electrodes. 
-Through sampling pulse widths and identifying fluctuations, MIDI note and control messages 
-are generated.  Features include Threshold, Scaling, Control Number, and Control Voltage 
-using PWM through an RC Low Pass filter.
 -------------*/
 
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
@@ -25,7 +22,8 @@ int *scaleSelect = majorPent; //initialize scaling
 int root = 0; //initialize for root
 //*******************************
 
-
+// VARIABLES
+//**********************************************************************************************************
 // BUTTONS
 const byte interruptPin = INT0; //galvanometer input
 const byte knobPin = A0; //knob analog input
@@ -35,7 +33,6 @@ int lastButtonState = LOW; // for debounce
 
 // TEMP BUTTON
 const int LEDPin = 7;
-
 
 // SAMPLE ARRAY
 const byte samplesize = 10; //set sample array size
@@ -97,6 +94,9 @@ MIDImessage;
 MIDImessage noteArray[polyphony]; //manage MIDImessage data as an array with size polyphony
 int noteIndex = 0;
 MIDImessage controlMessage; //manage MIDImessage data for Control Message (CV out)
+//**********************************************************************************************************
+
+
 
 // INITIATE
 void setup()
@@ -110,7 +110,6 @@ void setup()
   //MIDIpanic(); //dont panic, unless you are sure it is nessisary
   if(noteLEDs) bootLightshow(); //a light show to display on system boot
   attachInterrupt(interruptPin, sample, RISING);  //begin sampling from interrupt
-  
 }
 
 // MAIN LOOP
@@ -121,12 +120,11 @@ void loop()
   if(index >= samplesize)  { analyzeSample(); }  //if samples array full, also checked in analyzeSample(), call sample analysis   
   checkNote();  //turn off expired notes 
   checkControl();  //update control value
-  
   checkButton();  // WIP
-  
   checkLED();  //LED management without delay()
   previousMillis = currentMillis;   //manage time
 }
+
 
 
 
@@ -165,7 +163,6 @@ void setControl(int type, int value, int velocity, long duration)
   controlMessage.period = duration;
   controlMessage.duration = currentMillis + duration; //schedule for update cycle
 }
-
 
 // CHANGE VALUES FOR MIDI BASED ON LIKE A SLIDING RATE? CV STUFF TOO (UNSURE)
 void checkControl()
@@ -243,7 +240,6 @@ void midiSerial(int type, int channel, int data1, int data2) {
   sei(); //enable interrupts
 }
 
-
 // READ KNOB
 void checkKnob() {
   //float knobValue 
@@ -259,7 +255,6 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
-
 
 //////////////////////////////////////////////////////// LED LED LED 
 // LED RAMPS
@@ -350,12 +345,8 @@ int checkButton() {
   lastButtonState = reading;
 }
 
-
-
-
-
 // FOR READING THE GALVANOMETER
-//interrupt timing sample array
+// interrupt timing sample array
 void sample()
 {
   if(index < samplesize) {
@@ -449,16 +440,3 @@ int scaleNote(int note, int scale[], int root) {
   scaled = (scaled + (12 * octave)) + root; //apply octave and root
   return scaled;
 }
-
-
-
-
-
-/*--------
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
----------*/
