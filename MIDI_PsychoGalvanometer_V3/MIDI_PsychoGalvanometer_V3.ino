@@ -63,6 +63,7 @@ volatile unsigned long samples[samplesize];
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 1;
 
+// Checks rate of change, essentially density?
 // KNOB VALUES
 float threshold = 2.3;  //change threshold multiplier
 float threshMin = 1.61; //scaling threshold min
