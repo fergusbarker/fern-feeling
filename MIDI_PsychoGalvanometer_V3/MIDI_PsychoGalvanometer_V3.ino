@@ -103,6 +103,7 @@ MIDImessage controlMessage; //manage MIDImessage data for Control Message (CV ou
 //**********************************************************************************************************
 
 
+//////////////////////////////////////////////////////// MAIN LOOP AND SETUP
 
 // INITIATE
 void setup()
@@ -131,7 +132,7 @@ void loop()
   previousMillis = currentMillis;   //manage time
 }
 
-
+//////////////////////////////////////////////////////// MAIN LOOP AND SETUP 
 
 
 // IF IN ARRAY SET NEW NOTE (UNSURE)
@@ -248,6 +249,9 @@ void midiSerial(int type, int channel, int data1, int data2) {
   sei(); //enable interrupts
 }
 
+
+//////////////////////////////////////////////////////// KNOB
+
 // READ KNOB
 void checkKnob() {
   //float knobValue
@@ -263,6 +267,7 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+//////////////////////////////////////////////////////// KNOB
 
 //////////////////////////////////////////////////////// LED LED LED
 // LED RAMPS
