@@ -6,7 +6,7 @@ consisting of a 555 timer set as an astablemultivibrator and two electrodes.
 
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
 
-
+//**********************************************************************************************************
 // SCALES
 //******************************
 //set scaled values, sorted array, first element scale length
@@ -29,7 +29,6 @@ int *scaleSelect = currentScale[0]; //initialize scaling
 //*******************************
 
 // VARIABLES
-//**********************************************************************************************************
 // BUTTONS
 const byte interruptPin = INT0; //galvanometer input
 const byte knobPin = A0; //knob analog input
@@ -100,6 +99,7 @@ MIDImessage;
 MIDImessage noteArray[polyphony]; //manage MIDImessage data as an array with size polyphony
 int noteIndex = 0;
 MIDImessage controlMessage; //manage MIDImessage data for Control Message (CV out)
+
 //**********************************************************************************************************
 
 
@@ -132,34 +132,9 @@ void loop()
   previousMillis = currentMillis;   //manage time
 }
 
-//////////////////////////////////////////////////////// MAIN LOOP AND SETUP 
+//////////////////////////////////////////////////////// MAIN LOOP AND SETUP
 
 
-// IF IN ARRAY SET NEW NOTE (UNSURE)
-void setNote(int value, int velocity, long duration, int notechannel)
-{
-  //find available note in array (velocity = 0);
-  for(int i=0;i<polyphony;i++){
-    if(!noteArray[i].velocity){
-      //if velocity is 0, replace note in array
-      noteArray[i].type = 0;
-      noteArray[i].value = value;
-      noteArray[i].velocity = velocity;
-      noteArray[i].duration = currentMillis + duration;
-      noteArray[i].channel = notechannel;
-
-      midiSerial(144, channel, value, velocity);
-
-      if(noteLEDs){
-          for(byte j=0; j<(LED_NUM-1); j++) {   //find available LED and set
-            if(!leds[j].is_fading()) { rampUp(i, 255, duration);  break; }
-          }
-      }
-
-      break;
-    }
-  }
-}
 
 // NOTE VALUES FOR MIDI
 void setControl(int type, int value, int velocity, long duration)
@@ -312,6 +287,8 @@ void bootLightshow(){
 }
 //////////////////////////////////////////////////////// LED LED LED
 
+
+//////////////////////////////////////////////////////// BUTTON OPERATIONS
 // THE MAIN UPCOMING AFFAIR
 void checkButton() {
 
@@ -370,6 +347,8 @@ void changeScale() {
   }
   *scaleSelect = currentScale[selectedScale];
 }
+
+//////////////////////////////////////////////////////// BUTTON OPERATIONS
 
 // FOR READING THE GALVANOMETER
 // interrupt timing sample array
@@ -440,6 +419,32 @@ void analyzeSample()
   }
 }
 
+// IF IN ARRAY SET NEW NOTE (UNSURE)
+void setNote(int value, int velocity, long duration, int notechannel)
+{
+  //find available note in array (velocity = 0);
+  for(int i=0;i<polyphony;i++){
+    if(!noteArray[i].velocity){
+      //if velocity is 0, replace note in array
+      noteArray[i].type = 0;
+      noteArray[i].value = value;
+      noteArray[i].velocity = velocity;
+      noteArray[i].duration = currentMillis + duration;
+      noteArray[i].channel = notechannel;
+
+      midiSerial(144, channel, value, velocity);
+
+      if(noteLEDs){
+          for(byte j=0; j<(LED_NUM-1); j++) {   //find available LED and set
+            if(!leds[j].is_fading()) { rampUp(i, 255, duration);  break; }
+          }
+      }
+
+      break;
+    }
+  }
+}
+
 
 // FINDING THE RIGHT NOTES IN THE SCALE
 int scaleSearch(int note, int scale[], int scalesize) {
@@ -461,7 +466,6 @@ int scaleSearch(int note, int scale[], int scalesize) {
  //didn't find note and didn't pass note value, uh oh!
  return 6;//give arbitrary value rather than fail
 }
-#test
 
 // ACTUALLY OUTPUTING A MIDI NOTE
 int scaleNote(int note, int scale[], int root)
