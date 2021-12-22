@@ -350,6 +350,32 @@ void changeScale() {
   *scaleSelect = currentScale[selectedScale];
 }
 
+// OCTAVE RANGE
+void changeRange() {
+  bool rangeUp = false; // increasing or decreasing range?
+  bool bottomTop = false; // effecting the top or bottom end?
+  if (rangeUp == false) {
+    // decreasing range at the bottom
+    if (bottomTop == false) {
+      noteMin = noteMin + 12;
+    }
+    // decreasing range at the top
+    else {
+      noteMax = noteMin - 12;
+    }
+  }
+  else {
+    // increasing range at the bottom
+    if (bottomTop == false) {
+      noteMin = noteMin - 12;
+    }
+    // increasing range at the top
+    else {
+      noteMax = noteMin + 12;
+    }
+  }
+}
+
 //////////////////////////////////////////////////////// BUTTON OPERATIONS
 
 
