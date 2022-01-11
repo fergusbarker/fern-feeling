@@ -2,9 +2,13 @@
 MIDI_PsychoGalvanometer v021
 Accepts pulse inputs from a Galvanic Conductance sensor
 consisting of a 555 timer set as an astablemultivibrator and two electrodes.
+
+TODO:
+- Pattern generator?
 -------------*/
 
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
+#include <MIDI.h> // midi test
 
 //**********************************************************************************************************
 // SCALES
@@ -164,9 +168,16 @@ void checkControl()
        //send MIDI control message after ramp duration expires, on each increment
        midiSerial(176, channel, controlMessage.type, controlMessage.value);
 
+        // THIS CONFUSES ME
         //send out control voltage message on pin 17, PB3, digital 11
-        if(controlVoltage) { if(distance > 0) { rampUp(controlLED, map(controlMessage.value, 0, 127, 0 , 255), 5); }
-                                            else { rampDown(controlLED, map(controlMessage.value, 0, 127, 0 , 255), 5); }
+        if(controlVoltage) {
+          if (distance > 0) {
+             rampUp(controlLED, map(controlMessage.value, 0, 127, 0 , 255), 5);
+          }
+          else
+          {
+            rampDown(controlLED, map(controlMessage.value, 0, 127, 0 , 255), 5);
+          }
         }
     }
   }
@@ -379,6 +390,15 @@ void changeRange() {
 //////////////////////////////////////////////////////// BUTTON OPERATIONS
 
 
+//////////////////////////////////////////////////////// TRIGGER CODE
+
+int triggerStore()
+{
+  // sends a trigger on new midi notes
+
+}
+
+//////////////////////////////////////////////////////// TRIGGER CODE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////// GALVANOMETER AND ANALYSIS
 // FOR READING THE GALVANOMETER
 // interrupt timing sample array
