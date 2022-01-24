@@ -5,6 +5,7 @@ consisting of a 555 timer set as an astablemultivibrator and two electrodes.
 
 TODO:
 - Pattern generator?
+- Move to MIDI library
 -------------*/
 
 #include <LEDFader.h> //manage LEDs without delay() jgillick/arduino-LEDFader https://github.com/jgillick/arduino-LEDFader.git
